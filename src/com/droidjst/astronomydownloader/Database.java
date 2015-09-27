@@ -41,7 +41,7 @@ public class Database
     private final GregorianCalendar calendar_now = (GregorianCalendar) GregorianCalendar.getInstance();
     private final GregorianCalendar calendar_var = (GregorianCalendar) GregorianCalendar.getInstance();
     
-    public boolean createSQLiteTable()
+    public void createSQLiteTable() throws SQLException
     {
         Connection connection = null;
         Statement statement = null;
@@ -50,8 +50,6 @@ public class Database
         
         connection = (Connection) tuple[0];
         statement = (Statement) tuple[1];
-        
-        boolean exc_thrown = false;
         
         try
         {
@@ -66,16 +64,12 @@ public class Database
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
-            
-            exc_thrown = true;
+            throw e;
         }
         finally
         {
             finalizeConnection(connection, statement);
         }
-        
-        return exc_thrown == false;
     }
     
     public int getCount()

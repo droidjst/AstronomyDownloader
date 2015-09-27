@@ -19,92 +19,106 @@
 package com.droidjst.astronomydownloader;
 
 import java.io.File;
+import java.sql.SQLException;
 
 public class Driver
 {
+    /*
+     * Local fields for use in main
+     */
+    private static Database database;
+    private static DatabaseUtil dbutil;
+    private static JsoupUtil jsouputil;
+    private static WebImageUtil webimageutil;
+    
+    private static Exception exception;
+    
+    private static void init()
+    {
+        database = new Database();
+        dbutil = new DatabaseUtil();
+        
+        jsouputil = new JsoupUtil();
+        webimageutil = new WebImageUtil();
+    }
+    
+    
+    
     public static void main(String[] args)
     {
-        Database database = new Database();
+        init();
         
         if(database.isAvailable() == false)
         {
-            boolean created = database.createSQLiteTable();
-            
-            if(created)
+            try
             {
-                DatabaseUtil dbutil = new DatabaseUtil();
+                database.createSQLiteTable();
                 
-                boolean completed = dbutil.addBasicArchive();
-                
-                if(completed)
-                {
-                    System.out.println("entires= " + database.getCount());
-                }
-                else
-                {
-                    // unable to add archive to database
-                }
+                dbutil.addBasicArchive();
             }
-            else
+            catch (SQLException e)
             {
-                // unable to create database
+                exception = e;
+            }
+            
+            if(exception != null)
+            {
+                System.err.println(exception.getMessage());
+                
+                System.exit(1);
             }
         }
-        else
+        
+        createApplicationFolders();
+        
+        String[] urls = dbutil.getURLs();
+        
+        String html;
+        
+        String image_src;
+        String credit;
+        String explanation;
+        
+        int index = 0;
+        
+        String url;
+        
+        while(index < urls.length)
         {
-            DatabaseUtil dbutil = new DatabaseUtil();
+            url = urls[index];
             
-            JsoupUtil jsouputil = new JsoupUtil();
+            html = jsouputil.getHTML(Const.URL_NASA_APOD + url);
             
-            File archive_dir = new File(new File("").getAbsolutePath() + Const.ARCHIVE_DIR);
+            image_src = HTMLUtil.getImageSource(html);
+            credit = HTMLUtil.getImageCredit(html);
+            explanation = HTMLUtil.getExplanation(html);
             
-            if(archive_dir.exists() == false)
-            {
-                archive_dir.mkdirs();
-            }
+            webimageutil.download(Const.URL_NASA_APOD + image_src);
             
-            String[] urls = dbutil.getURLs();
+            dbutil.addExtendedArchiveItem(image_src, url.substring(2, 8), credit, explanation);
             
-            String html;
-            
-            String image_src;
-            String credit;
-            String explanation;
-            
-            int index = 258;
-            
-            String url;
-            
-            while(index < urls.length)
-            {
-                url = urls[index];
-                
-                /*
-                 * html = jsouputil.savePage(Const.URL_NASA_APOD + url, url);
-                 */
-                
-                html = jsouputil.getHTML(Const.URL_NASA_APOD + url);
-                
-                if(html == null)
-                {
-                    System.out.println("url data null= " + url);
-                    
-                    continue;
-                }
-                
-                image_src = HTMLUtil.getImageSource(html);
-                credit = HTMLUtil.getImageCredit(html);
-                explanation = HTMLUtil.getExplanation(html);
-                
-                System.out.println("--------");
-                
-                dbutil.addExtendedArchiveItem(image_src, url.substring(2, 8), credit, explanation);
-                
-                index++;
-            }
-            
+            index++;
         }
     }
     
     
+    
+    private static void createApplicationFolders()
+    {
+        File file;
+        
+        file = new File(new File("").getAbsolutePath() + Const.ARCHIVE_DIR);
+        
+        if(file.exists() == false)
+        {
+            file.mkdirs();
+        }
+        
+        file = new File(new File("").getAbsolutePath() + Const.IMAGES_DIR);
+        
+        if(file.exists() == false)
+        {
+            file.mkdirs();
+        }
+    }
 }

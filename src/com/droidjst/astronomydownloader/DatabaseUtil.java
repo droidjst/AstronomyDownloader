@@ -101,7 +101,7 @@ public class DatabaseUtil
         return exc_thrown == false;
     }
     
-    public boolean addBasicArchive()
+    public void addBasicArchive() throws SQLException
     {
         JsoupUtil jsouputil = new JsoupUtil();
         
@@ -121,8 +121,6 @@ public class DatabaseUtil
         connection = (Connection) tuple[0];
         statement = (Statement) tuple[1];
         
-        boolean exc_thrown = false;
-        
         try
         {
             final String format = "INSERT INTO apod (date, title) VALUES (%d, '%s');";
@@ -140,22 +138,16 @@ public class DatabaseUtil
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
-            
-            exc_thrown = true;
+            throw e;
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            
-            exc_thrown = true;
+            throw e;
         }
         finally
         {
             database.finalizeConnection(connection, statement);
         }
-        
-        return exc_thrown == false;
     }
     
     public String[] getURLs()
