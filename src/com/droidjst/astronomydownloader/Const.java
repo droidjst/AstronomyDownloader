@@ -22,11 +22,11 @@ import java.io.File;
 
 public class Const
 {
-	public final static String URL_NASA_APOD = "http://apod.nasa.gov/apod/";
-	
-	public final static String DB_NAME = "apod.db";
-	
-	public final static String FILE_SEP = File.separator;
-	
-	public final static String ARCHIVE_DIR = FILE_SEP + "archive" + FILE_SEP;
+    public final static String URL_NASA_APOD = "http://apod.nasa.gov/apod/";
+    
+    public final static String DB_NAME = "apod.db";
+    
+    public final static String FILE_SEP = File.separator;
+    
+    public final static String ARCHIVE_DIR = FILE_SEP + "archive" + FILE_SEP;
 }

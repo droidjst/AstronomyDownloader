@@ -29,221 +29,221 @@ import java.util.Collections;
 
 public class DatabaseUtil
 {
-	private final static SimpleDateFormat date_apod = new SimpleDateFormat("yyMMdd");
-	private final static SimpleDateFormat date_custom = new SimpleDateFormat("MMM dd, yyy");
-	
-	public boolean addExtendedArchiveItem(String image_src, String date, String credit, String explanation)
-	{
-		Connection connection = null;
-		Statement statement_select = null;
-		Statement statement_update = null;
-		
-		ResultSet resultset = null;
-		
-		Database database = new Database();
-		
-		Object[] tuple = database.getConnectionAndStatement();
-		
-		connection = (Connection) tuple[0];
-		statement_select = (Statement) tuple[1];
-		
-		boolean exc_thrown = false;
-		
-		try
-		{
-			final String sql_getid = "SELECT _id FROM apod WHERE date = %d;";
-			
-			statement_select = connection.createStatement();
-			
-			date = Long.toString(date_apod.parse(date).getTime());
-			
-			String sql_select = String.format(sql_getid, Long.valueOf(date));
-			
-			resultset = statement_select.executeQuery(sql_select);
-			
-			resultset.next();
-			
-			int _id = resultset.getInt(1);
-			
-			resultset.close();
-			
-			statement_select.close();
-			
-			final String format = "UPDATE apod SET url = '%s', credit = '%s', explanation = '%s' WHERE _id = %d;";
-			
-			statement_update = connection.createStatement();
-			
-			credit = credit.replace("'", "''");
-			explanation = explanation.replace("'", "''");
-			
-			String sql_insert = String.format(format, image_src, credit, explanation, _id);
-			
-			statement_update.executeUpdate(sql_insert);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			
-			exc_thrown = true;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			
-			exc_thrown = true;
-		}
-		finally
-		{
-			database.finalizeConnection(connection, statement_select, statement_update);
-			database.finalizeResultSet(resultset);
-		}
-		
-		return exc_thrown == false;
-	}
-	
-	public boolean addBasicArchive()
-	{
-		JsoupUtil jsouputil = new JsoupUtil();
-		
-		ArrayList<String[]> archive;
-		
-		archive = jsouputil.getHTMLRefs(Const.URL_NASA_APOD + "archivepix.html");
-		
-		Collections.reverse(archive);
-		
-		Connection connection = null;
-		Statement statement = null;
-		
-		Database database = new Database();
-		
-		Object[] tuple = database.getConnectionAndStatement();
-		
-		connection = (Connection) tuple[0];
-		statement = (Statement) tuple[1];
-		
-		boolean exc_thrown = false;
-		
-		try
-		{
-			final String format = "INSERT INTO apod (date, title) VALUES (%d, '%s');";
-			
-			for(String[] item : archive)
-			{
-				statement = connection.createStatement();
-				
-				item[1] = item[1].replace("'", "''");
-				
-				String sql_insert = String.format(format, parseDate(item[0]), item[1]);
-				
-				statement.executeUpdate(sql_insert);
-			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			
-			exc_thrown = true;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			
-			exc_thrown = true;
-		}
-		finally
-		{
-			database.finalizeConnection(connection, statement);
-		}
-		
-		return exc_thrown == false;
-	}
-	
-	public String[] getURLs()
-	{
-		ArrayList<String> urls = new ArrayList<>();
-		
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet resultset = null;
-		
-		Database database = new Database();
-		
-		Object[] tuple = database.getConnectionAndStatement();
-		
-		connection = (Connection) tuple[0];
-		statement = (Statement) tuple[1];
-		
-		boolean exc_thrown = false;
-		
-		try
-		{
-			String sql_statement = "SELECT date FROM apod;";
-			
-			statement = connection.createStatement();
-			
-			resultset = statement.executeQuery(sql_statement);
-			
-			while(resultset.next())
-			{
-				urls.add("ap" + date_apod.format(resultset.getLong(1)) + ".html");
-			}
-			
-			urls.trimToSize();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			
-			exc_thrown = true;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			
-			exc_thrown = true;
-		}
-		finally
-		{
-			database.finalizeConnection(connection, statement);
-		}
-		
-		if(exc_thrown)
-		{
-			return null;
-		}
-		else
-		{
-			String[] _urls = new String[urls.size()];
-			
-			for(int a = 0 ; a < _urls.length ; a++)
-			{
-				_urls[a] = urls.get(a);
-			}
-			
-			return _urls;
-		}
-	}
-	
-	public long parseDate(String string)
-	{
-		try
-		{
-			return date_apod.parse(string.substring(2, 8)).getTime();
-		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return -1;
-	}
-	public static String dateToAPODString(long date)
-	{
-		return date_apod.format(date);
-	}
-	
-	public static String dateToCustomString(long date)
-	{
-		return date_custom.format(date);
-	}
+    private final static SimpleDateFormat date_apod = new SimpleDateFormat("yyMMdd");
+    private final static SimpleDateFormat date_custom = new SimpleDateFormat("MMM dd, yyy");
+    
+    public boolean addExtendedArchiveItem(String image_src, String date, String credit, String explanation)
+    {
+        Connection connection = null;
+        Statement statement_select = null;
+        Statement statement_update = null;
+        
+        ResultSet resultset = null;
+        
+        Database database = new Database();
+        
+        Object[] tuple = database.getConnectionAndStatement();
+        
+        connection = (Connection) tuple[0];
+        statement_select = (Statement) tuple[1];
+        
+        boolean exc_thrown = false;
+        
+        try
+        {
+            final String sql_getid = "SELECT _id FROM apod WHERE date = %d;";
+            
+            statement_select = connection.createStatement();
+            
+            date = Long.toString(date_apod.parse(date).getTime());
+            
+            String sql_select = String.format(sql_getid, Long.valueOf(date));
+            
+            resultset = statement_select.executeQuery(sql_select);
+            
+            resultset.next();
+            
+            int _id = resultset.getInt(1);
+            
+            resultset.close();
+            
+            statement_select.close();
+            
+            final String format = "UPDATE apod SET url = '%s', credit = '%s', explanation = '%s' WHERE _id = %d;";
+            
+            statement_update = connection.createStatement();
+            
+            credit = credit.replace("'", "''");
+            explanation = explanation.replace("'", "''");
+            
+            String sql_insert = String.format(format, image_src, credit, explanation, _id);
+            
+            statement_update.executeUpdate(sql_insert);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            
+            exc_thrown = true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            
+            exc_thrown = true;
+        }
+        finally
+        {
+            database.finalizeConnection(connection, statement_select, statement_update);
+            database.finalizeResultSet(resultset);
+        }
+        
+        return exc_thrown == false;
+    }
+    
+    public boolean addBasicArchive()
+    {
+        JsoupUtil jsouputil = new JsoupUtil();
+        
+        ArrayList<String[]> archive;
+        
+        archive = jsouputil.getHTMLRefs(Const.URL_NASA_APOD + "archivepix.html");
+        
+        Collections.reverse(archive);
+        
+        Connection connection = null;
+        Statement statement = null;
+        
+        Database database = new Database();
+        
+        Object[] tuple = database.getConnectionAndStatement();
+        
+        connection = (Connection) tuple[0];
+        statement = (Statement) tuple[1];
+        
+        boolean exc_thrown = false;
+        
+        try
+        {
+            final String format = "INSERT INTO apod (date, title) VALUES (%d, '%s');";
+            
+            for(String[] item : archive)
+            {
+                statement = connection.createStatement();
+                
+                item[1] = item[1].replace("'", "''");
+                
+                String sql_insert = String.format(format, parseDate(item[0]), item[1]);
+                
+                statement.executeUpdate(sql_insert);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            
+            exc_thrown = true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            
+            exc_thrown = true;
+        }
+        finally
+        {
+            database.finalizeConnection(connection, statement);
+        }
+        
+        return exc_thrown == false;
+    }
+    
+    public String[] getURLs()
+    {
+        ArrayList<String> urls = new ArrayList<>();
+        
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultset = null;
+        
+        Database database = new Database();
+        
+        Object[] tuple = database.getConnectionAndStatement();
+        
+        connection = (Connection) tuple[0];
+        statement = (Statement) tuple[1];
+        
+        boolean exc_thrown = false;
+        
+        try
+        {
+            String sql_statement = "SELECT date FROM apod;";
+            
+            statement = connection.createStatement();
+            
+            resultset = statement.executeQuery(sql_statement);
+            
+            while(resultset.next())
+            {
+                urls.add("ap" + date_apod.format(resultset.getLong(1)) + ".html");
+            }
+            
+            urls.trimToSize();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            
+            exc_thrown = true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            
+            exc_thrown = true;
+        }
+        finally
+        {
+            database.finalizeConnection(connection, statement);
+        }
+        
+        if(exc_thrown)
+        {
+            return null;
+        }
+        else
+        {
+            String[] _urls = new String[urls.size()];
+            
+            for(int a = 0 ; a < _urls.length ; a++)
+            {
+                _urls[a] = urls.get(a);
+            }
+            
+            return _urls;
+        }
+    }
+    
+    public long parseDate(String string)
+    {
+        try
+        {
+            return date_apod.parse(string.substring(2, 8)).getTime();
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return -1;
+    }
+    public static String dateToAPODString(long date)
+    {
+        return date_apod.format(date);
+    }
+    
+    public static String dateToCustomString(long date)
+    {
+        return date_custom.format(date);
+    }
 }

@@ -31,153 +31,153 @@ import org.jsoup.select.Elements;
 
 public class JsoupUtil
 {
-	public static int JSOUP_CALLS = 0;
-	
-	/*
-	enum SaveMode
-	{
-		PER_DAY,
-		PER_WEEK,
-		PER_MONTH,
-		PER_YEAR,
-	}
-	*/
-	
-	public String getHTML(String url)
-	{
-		Document jdoc = null;
-		
-		try
-		{
-			jdoc = Jsoup.connect(url).get();
-			
-			System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTML %n", ++JSOUP_CALLS);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return jdoc == null ? null : jdoc.html();
-	}
-	
-	public String getHTMLBody(String url)
-	{
-		Document jdoc = null;
-		
-			try
-			{
-				jdoc = Jsoup.connect(url).get();
-				
-				System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLBody %n", ++JSOUP_CALLS);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		
-		return jdoc == null ? null : jdoc.body().html();
-	}
-	
-	public String getHTMLBodyText(String url)
-	{
-		Document jdoc = null;
-		
-			try
-			{
-				jdoc = Jsoup.connect(url).get();
-				
-				System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLBodyText %n", ++JSOUP_CALLS);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		
-		return jdoc == null ? null : jdoc.body().text();
-	}
-	
-	public String savePage(String url, String filename)
-	{
-		FileOutputStream fostream = null;
-		
-		String html = null;
-		
-		try
-		{
-			Response response = Jsoup.connect(url).execute();
-			
-			System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.savePage %n", ++JSOUP_CALLS);
-			
-			String charset = response.charset();
-			
-			html = response.body();
-			
-			fostream = new FileOutputStream(new File("").getAbsolutePath() + Const.ARCHIVE_DIR + filename);
-			
-			fostream.write(html.getBytes(charset));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if(fostream != null)
-			{
-				try
-				{
-					fostream.flush();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-				finally
-				{
-					try
-					{
-						fostream.close();
-					}
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
-		return html;
-	}
-	
-	public ArrayList<String[]> getHTMLRefs(String url)
-	{
-		Document jdoc;
-		
-		ArrayList<String[]> archive = null;
-		
-		try
-		{
-			jdoc = Jsoup.connect(url).get();
-			
-			System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLRefs %n", ++JSOUP_CALLS);
-			
-			Elements links = jdoc.select("a[href~=ap[0-9]{6}\\.html]");
-			
-			archive = new ArrayList<>();
-			
-			for(Element href : links)
-			{
-				archive.add(new String[] { href.attr("href"), href.text() });
-			}
-			
-			archive.trimToSize();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return archive;
-	}
+    public static int JSOUP_CALLS = 0;
+    
+    /*
+    enum SaveMode
+    {
+        PER_DAY,
+        PER_WEEK,
+        PER_MONTH,
+        PER_YEAR,
+    }
+    */
+    
+    public String getHTML(String url)
+    {
+        Document jdoc = null;
+        
+        try
+        {
+            jdoc = Jsoup.connect(url).get();
+            
+            System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTML %n", ++JSOUP_CALLS);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return jdoc == null ? null : jdoc.html();
+    }
+    
+    public String getHTMLBody(String url)
+    {
+        Document jdoc = null;
+        
+            try
+            {
+                jdoc = Jsoup.connect(url).get();
+                
+                System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLBody %n", ++JSOUP_CALLS);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        
+        return jdoc == null ? null : jdoc.body().html();
+    }
+    
+    public String getHTMLBodyText(String url)
+    {
+        Document jdoc = null;
+        
+            try
+            {
+                jdoc = Jsoup.connect(url).get();
+                
+                System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLBodyText %n", ++JSOUP_CALLS);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        
+        return jdoc == null ? null : jdoc.body().text();
+    }
+    
+    public String savePage(String url, String filename)
+    {
+        FileOutputStream fostream = null;
+        
+        String html = null;
+        
+        try
+        {
+            Response response = Jsoup.connect(url).execute();
+            
+            System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.savePage %n", ++JSOUP_CALLS);
+            
+            String charset = response.charset();
+            
+            html = response.body();
+            
+            fostream = new FileOutputStream(new File("").getAbsolutePath() + Const.ARCHIVE_DIR + filename);
+            
+            fostream.write(html.getBytes(charset));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(fostream != null)
+            {
+                try
+                {
+                    fostream.flush();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    try
+                    {
+                        fostream.close();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        
+        return html;
+    }
+    
+    public ArrayList<String[]> getHTMLRefs(String url)
+    {
+        Document jdoc;
+        
+        ArrayList<String[]> archive = null;
+        
+        try
+        {
+            jdoc = Jsoup.connect(url).get();
+            
+            System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLRefs %n", ++JSOUP_CALLS);
+            
+            Elements links = jdoc.select("a[href~=ap[0-9]{6}\\.html]");
+            
+            archive = new ArrayList<>();
+            
+            for(Element href : links)
+            {
+                archive.add(new String[] { href.attr("href"), href.text() });
+            }
+            
+            archive.trimToSize();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return archive;
+    }
 }
