@@ -21,13 +21,92 @@ package com.droidjst.astronomydownloader;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
 
-public class WebImageUtil
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
+
+public class ImageUtil
 {
+    public int[] getImageDimensions(String uri)
+    {
+        String file_ext;
+        
+        File file = new File(uri);
+        
+        file_ext = file.getName().replaceAll("(?i)[\\w]*(?=\\.)(\\..*)", "$1");
+        
+        Iterator<ImageReader> iterator = ImageIO.getImageReadersBySuffix(file_ext.substring(1));
+        
+        int[] width_height = new int[2];
+        
+        ImageReader ireader = null;
+        
+        ImageInputStream iistream = null;
+        
+        if(iterator.hasNext())
+        {
+            try
+            {
+                ireader = iterator.next();
+                
+                iistream = new FileImageInputStream(file);
+                
+                ireader.setInput(iistream);
+                
+                width_height[0] = ireader.getWidth(ireader.getMinIndex());
+                width_height[1] = ireader.getHeight(ireader.getMinIndex());
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if(ireader != null)
+                {
+                    ireader.dispose();
+                }
+                
+                if(iistream != null)
+                {
+                    try
+                    {
+                        iistream.flush();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            iistream.close();
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        
+        return width_height;
+    }
+    
     public Thread download(String url_string)
     {
         URL url = null;
