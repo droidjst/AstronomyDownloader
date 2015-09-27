@@ -14,20 +14,20 @@ How to run this project with [Eclipse](https://eclipse.org/) (Windows, Mac OS X,
 
 If the *EGit* plug-in is already installed go to step 3.  
 
-1. Open Eclipse and install *EGit* from the *Eclipse Marketplace*  (Help => Eclipse Marketplace...)
-2. Right click inside Package Explorer  (Window => Package Explorer)
-3. Choose "Import..."
-4. Expand the "Git" folder and choose "Projects from Git"
-6. Choose "Clone URI" and enter the git repository HTTPS address [https://github.com/droidjst/AstronomyDownloader.git](https://github.com/droidjst/AstronomyDownloader.git)
-8. Some of the form fields will automatically populate with the URL information
-9. Enter your GitHub username and password if you're going to be contributing to the project, otherwise you can leave it blank
-10. Choose "Next"
-11. Add a tick mark to the "master" branch
-12. Choose "Next"
-13. Enter a location to store the remote copy, preferably the /git folder found in the user directory
-14. Keep the initial branch set to "master"
-15. The remote name can be anything, although it's traditionally titled "origin"
-16. Choose "Finish"
+1. Open Eclipse
+2. Install *EGit* from the *Eclipse Marketplace*  (Help => Eclipse Marketplace...)
+3. Right click inside Package Explorer (Window => Package Explorer) and choose "Import..." 
+1. Expand the "Git" folder and choose "Projects from Git"
+2. Choose "Clone URI" and enter the git repository HTTPS address [https://github.com/droidjst/AstronomyDownloader.git](https://github.com/droidjst/AstronomyDownloader.git)
+3. Some of the form fields will automatically populate with the URL information
+1. Enter your GitHub username and password if you're going to be contributing to the project, otherwise you can leave it blank
+2. Choose "Next"
+3. Add a tick mark to the "master" branch
+1. Choose "Next"
+2. Enter a location to store the remote copy, preferably the /git folder found in the user directory
+3. Keep the initial branch set to "master"
+1. The remote name can be anything, although it's traditionally titled "origin"
+2. Choose "Finish"
 
 Troubleshooting:    
 If there is an error with the Referenced Libraries folder make sure the Project Build Paths (Right-click the project in Project Explorer => Build Path => Configure Build Path...) have both the jsoup and sqlite-jdbc jar files referenced, with tick marks under the "Order and Export" section.  For all other inquiries send me an email droidjst@gmail.com.  
