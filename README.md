@@ -2,10 +2,10 @@ Project in beta development
 ===
 
 Utility used to download astronomy images from the user's search result.  
-Uses jsoup-1.8.3 and sqlite-jdbc-3.8.11.1
+Uses [jsoup-1.8.3](http://jsoup.org/) and [sqlite-jdbc-3.8.11.1](https://www.sqlite.org/)
 
 
-![Alt text](survey_ap12.gif "Optional title")
+![Apollo 12 astronauts Conrad and Bean retrieve parts from the Surveyor](survey_ap12.gif "Apollo 12 Visits Surveyor 3")
 
 
 ***
@@ -30,7 +30,7 @@ If the *EGit* plug-in is already installed go to step 3.
 2. Choose "Finish"
 
 Troubleshooting:    
-If there is an error with the Referenced Libraries folder make sure the Project Build Paths (Right-click the project in Project Explorer => Build Path => Configure Build Path...) have both the jsoup and sqlite-jdbc jar files referenced, with tick marks under the "Order and Export" section.  For all other inquiries send me an email droidjst@gmail.com.  
+If there is an error with the Referenced Libraries folder make sure the Project Build Paths (Right click the project in Project Explorer => Build Path => Configure Build Path...) have both the jsoup and sqlite-jdbc jar files referenced, with tick marks under the "Order and Export" section.  For all other inquiries send me an email droidjst@gmail.com.  
 
 ***
 
