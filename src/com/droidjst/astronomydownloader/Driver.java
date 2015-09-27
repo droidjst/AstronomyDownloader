@@ -19,17 +19,15 @@
 package com.droidjst.astronomydownloader;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Driver
 {
-    /*
-     * Local fields for use in main
-     */
     private static Database database;
     private static DatabaseUtil dbutil;
     private static JsoupUtil jsouputil;
-    private static WebImageUtil webimageutil;
+    private static ImageUtil imageutil;
     
     private static Exception exception;
     
@@ -39,10 +37,8 @@ public class Driver
         dbutil = new DatabaseUtil();
         
         jsouputil = new JsoupUtil();
-        webimageutil = new WebImageUtil();
+        imageutil = new ImageUtil();
     }
-    
-    
     
     public static void main(String[] args)
     {
@@ -71,8 +67,11 @@ public class Driver
         
         createApplicationFolders();
         
-        String[] urls = dbutil.getURLs();
-        
+        downloadImages();
+    }
+    
+    private static void downloadImages()
+    {
         String html;
         
         String image_src;
@@ -81,7 +80,26 @@ public class Driver
         
         int index = 0;
         
+        String uri = new File("").getAbsolutePath() + Const.FILE_SEP + "current_index";
+        
+        try
+        {
+            String contents = FileUtil.getContents(uri);
+            
+            index = Integer.parseInt(contents) - 1;
+        }
+        catch (IOException e)
+        {
+            
+        }
+        
+        System.out.println("starting at index " + index);
+        
         String url;
+        
+        String[] urls = dbutil.getURLs();
+        
+        final String PATH = new File("").getAbsolutePath();
         
         while(index < urls.length)
         {
@@ -93,15 +111,31 @@ public class Driver
             credit = HTMLUtil.getImageCredit(html);
             explanation = HTMLUtil.getExplanation(html);
             
-            webimageutil.download(Const.URL_NASA_APOD + image_src);
+            imageutil.download(Const.URL_NASA_APOD + image_src);
             
             dbutil.addExtendedArchiveItem(image_src, url.substring(2, 8), credit, explanation);
             
+            /*
+            int[] wh = imageutil.getImageDimensions(PATH + Const.IMAGES_DIR + image_src.replace("image/", ""));
+            
+            System.out.printf("%d x %d %n", wh[0], wh[1]);
+            */
+            
             index++;
+            
+            if(index % 25 == 0)
+            {
+                try
+                {
+                    FileUtil.setContents(uri, Integer.toString(index));
+                }
+                catch (IOException e)
+                {
+                    System.out.println("count not set index to file");
+                }
+            }
         }
     }
-    
-    
     
     private static void createApplicationFolders()
     {
