@@ -16,7 +16,7 @@
  */
 
 
-package com.droidjst.apoddownload;
+package com.droidjst.astronomydownloader;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

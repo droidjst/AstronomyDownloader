@@ -16,7 +16,7 @@
  */
 
 
-package com.droidjst.apoddownload;
+package com.droidjst.astronomydownloader;
 
 import java.io.File;
 import java.io.FileOutputStream;

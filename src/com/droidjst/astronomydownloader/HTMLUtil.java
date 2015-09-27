@@ -16,7 +16,7 @@
  */
 
 
-package com.droidjst.apoddownload;
+package com.droidjst.astronomydownloader;
 
 import org.jsoup.Jsoup;
 
