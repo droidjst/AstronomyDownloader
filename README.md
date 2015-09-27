@@ -2,43 +2,45 @@ Project in beta development
 ===
 
 Utility used to download astronomy images from the user's search result.  
-Uses Jsoup and an sqlite3 database.
+Uses jsoup-1.8.3 and sqlite-jdbc-3.8.11.1
+
+
+![Alt text](survey_ap12.gif "Optional title")
 
 
 ***
 
-How to run on Windows (with Eclipse):  
+How to run this project with [Eclipse](https://eclipse.org/) (Windows, Mac OS X, and Linux):  
 
-If the *EGit* plug-in is already installed on your version of Eclipse, go to step 3  
+If the *EGit* plug-in is already installed go to step 3.  
 
-1. Use Eclipse to install *EGit* from the *Eclipse Marketplace*  (Help => Eclipse Marketplace...)
-2. Restart Eclipse, unless already performed during the plug-in installation
-3. Right click inside Package Explorer  (Window => Package Explorer)
-4. Choose "Import..."
-5. Expand the "Git" folder
-6. Choose "Projects from Git"
-7. Choose "Clone URI"
-8. Enter the HTTPS address from the GitHub site ([https://github.com/droidjst/AstronomyDownloader.git](https://github.com/droidjst/AstronomyDownloader.git))
-9. The form should automatically populate with information from the URL
-10. If you'd like to contribute to the project you can enter your GitHub username and password.  Anonymous commits are not accepted
-11. Choose "Next"
-12. Add a tick mark to the "master" branch
-13. Choose "Next"
-14. Store a remote copy of the master branch on the local machine by entering a new directory from the file system (preferably the Git folder found in the /Users/{Name}/ directory)
-15. Keep the initial branch set to "master"
-16. Traditionally the remote name should be "origin", but it can be anything
-17. Choose "Finish"
+1. Open Eclipse and install *EGit* from the *Eclipse Marketplace*  (Help => Eclipse Marketplace...)
+2. Right click inside Package Explorer  (Window => Package Explorer)
+3. Choose "Import..."
+4. Expand the "Git" folder and choose "Projects from Git"
+6. Choose "Clone URI" and enter the git repository HTTPS address [https://github.com/droidjst/AstronomyDownloader.git](https://github.com/droidjst/AstronomyDownloader.git)
+8. Some of the form fields will automatically populate with the URL information
+9. Enter your GitHub username and password if you're going to be contributing to the project, otherwise you can leave it blank
+10. Choose "Next"
+11. Add a tick mark to the "master" branch
+12. Choose "Next"
+13. Enter a location to store the remote copy, preferably the /git folder found in the user directory
+14. Keep the initial branch set to "master"
+15. The remote name can be anything, although it's traditionally titled "origin"
+16. Choose "Finish"
 
 Troubleshooting:    
-If there is an error with the Referenced Libraries folder then make sure the Project Build Paths (Right-click the project in Project Explorer => Build Path => Configure Build Path...) have both Jsoup and sqlite-jdbc referenced and tick marks under "Order and Export".  For all other inquiries send me an email droidjst@gmail.com.  
+If there is an error with the Referenced Libraries folder make sure the Project Build Paths (Right-click the project in Project Explorer => Build Path => Configure Build Path...) have both the jsoup and sqlite-jdbc jar files referenced, with tick marks under the "Order and Export" section.  For all other inquiries send me an email droidjst@gmail.com.  
 
 ***
 
-How to run on Windows (with Command Prompt):
+How to run via the command line (Windows, OS X, and UNIX):
 
 The Java 1.7 JDK (or above) must be installed on the computer and the /bin folder must listed in the System Environment Variables (run "java -version" in Command Prompt).  
 
-Since this project was developed in Eclipse there is a package structure which is difficult to work with on the command line.  Copy the following batch of commands to Notepad and save as "AstronomyCompile.bat".
+Since this project was developed in Eclipse there is a package structure which is difficult to work with on the command line.  A batch file (for Windows) and bash script (for Mac OS X and Linux) will be provided in a future update.  
+
+For more information on compiling via the command line, see the following link:  [http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html](http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html)
 
 ***
 
