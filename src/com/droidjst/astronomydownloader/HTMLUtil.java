@@ -18,100 +18,66 @@
 
 package com.droidjst.astronomydownloader;
 
+import java.util.ArrayList;
+
 import org.jsoup.Jsoup;
 
 public class HTMLUtil
 {
-    private static final String IMG_SOURCE = "<IMG SRC=";
-    private static final String IMAGE_CREDIT = "Image Credit:";
-    private static final String PICTURE_CREDIT = "Picture Credit:";
-    private static final String CREDIT_COPYRIGHT = "Credit and Copyright";
-    private static final String CREDIT_AND_COPYRIGHT = "Credit & Copyright";
-    private static final String CREDIT = "Credit";
-    private static final String COPYRIGHT = "Copyright";
-    private static final String COURTESY = "Courtesy";
     private static final String EXPLANATION = "Explanation";
     private static final String TOMORROWS_PIC = "Tomorrow's picture";
     private static final String WE_KEEP_AN_ARCHIVE = "We keep an archive";
+    
+    private final static String[] CREDIT_STRINGS =
+        {
+            "Image Credit:",
+            "Picture Credit:",
+            "Credit and Copyright",
+            "Credit & Copyright",
+            "Credit",
+            "Copyright",
+            "Courtesy",
+            "Image Data",
+        };
     
     public static String getImageSource(String html)
     {
         return Jsoup.parse(html).select("a > img").attr("src");
     }
     
+    private static ArrayList<Integer> indices;
+    
     public static String getImageCredit(String html)
     {
-        int indexof_imagecredit = -1;
-        int indexof_picturecredit = -1;
-        int indexof_creditcopywrite = -1;
-        int indexof_creditandcopywrite = -1;
-        int indexof_copyright = -1;
-        int indexof_credit = -1;
-        int indexof_courtesy = -1;
-        int indexof_explanation = -1;
+        String text = Jsoup.parse(html).text();
         
-        indexof_imagecredit = html.indexOf(IMAGE_CREDIT);
-        indexof_picturecredit = html.indexOf(PICTURE_CREDIT);
-        indexof_creditcopywrite = html.indexOf(CREDIT_COPYRIGHT);
-        indexof_creditandcopywrite = html.indexOf(CREDIT_AND_COPYRIGHT);
-        indexof_copyright = html.indexOf(COPYRIGHT);
-        indexof_credit = html.indexOf(CREDIT);
-        indexof_explanation = html.indexOf(EXPLANATION);
-        indexof_courtesy = html.indexOf(COURTESY);
+        indices = new ArrayList<>();
         
-        if(indexof_explanation == -1 || 
-                (indexof_imagecredit == -1 && 
-                indexof_picturecredit == -1 && 
-                indexof_creditcopywrite == -1 && 
-                indexof_creditandcopywrite == -1 &&
-                indexof_copyright == -1 &&
-                indexof_credit == -1 && 
-                indexof_courtesy == -1))
+        int credit_index = -1;
+        int credit_length = -1;
+        
+        for(String credit : CREDIT_STRINGS)
+        {
+            indices.add(new Integer(credit_index = text.indexOf(credit)));
+            
+            if(credit_index != -1)
+            {
+                credit_length = credit.length();
+                
+                break;
+            }
+        }
+        
+        if(credit_index == -1)
         {
             return null;
         }
         
-        String text = Jsoup.parse(html).text();
-        
-        indexof_imagecredit = text.indexOf(IMAGE_CREDIT);
-        indexof_picturecredit = text.indexOf(PICTURE_CREDIT);
-        indexof_creditcopywrite = text.indexOf(CREDIT_COPYRIGHT);
-        indexof_creditandcopywrite = text.indexOf(CREDIT_AND_COPYRIGHT);
-        indexof_copyright = text.indexOf(COPYRIGHT);
-        indexof_credit = text.indexOf(CREDIT);
-        indexof_explanation = text.indexOf(EXPLANATION);
-        indexof_courtesy = text.indexOf(COURTESY);
+        int indexof_explanation = text.indexOf(EXPLANATION);
         
         String credit = null;
         
-        if(indexof_imagecredit != -1)
-        {
-            credit = text.substring(indexof_imagecredit + IMAGE_CREDIT.length(), indexof_explanation);
-        }
-        else if(indexof_picturecredit != -1)
-        {
-            credit = text.substring(indexof_picturecredit + PICTURE_CREDIT.length(), indexof_explanation);
-        }
-        else if(indexof_creditcopywrite != -1)
-        {
-            credit = text.substring(1 + indexof_creditcopywrite + CREDIT_COPYRIGHT.length(), indexof_explanation);
-        }
-        else if(indexof_creditandcopywrite != -1)
-        {
-            credit = text.substring(1 + indexof_creditandcopywrite + CREDIT_AND_COPYRIGHT.length(), indexof_explanation);
-        }
-        else if(indexof_copyright != -1)
-        {
-            credit = text.substring(1 + indexof_copyright + COPYRIGHT.length(), indexof_explanation);
-        }
-        else if(indexof_credit != -1)
-        {
-            credit = text.substring(1 + indexof_credit + CREDIT.length(), indexof_explanation);
-        }
-        else if(indexof_courtesy != -1)
-        {
-            credit = text.substring(1 + indexof_courtesy + COURTESY.length(), indexof_explanation);
-        }
+        credit = text.substring(credit_index + credit_length, indexof_explanation);
         
         credit = credit.replace("\n", " ");
         credit = credit.replace("[s]+", " ");
