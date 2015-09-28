@@ -24,7 +24,7 @@ import org.jsoup.Jsoup;
 
 public class HTMLUtil
 {
-    private static final String EXPLANATION = "Explanation";
+    private static final String EXPLANATION = "Explanation:";
     private static final String TOMORROWS_PIC = "Tomorrow's picture";
     private static final String WE_KEEP_AN_ARCHIVE = "We keep an archive";
     
@@ -33,6 +33,7 @@ public class HTMLUtil
             "Image Credit:",
             "Picture Credit:",
             "Credit and Copyright",
+            "Image Credit & Copyright",
             "Credit & Copyright",
             "Credit",
             "Copyright",
@@ -62,7 +63,7 @@ public class HTMLUtil
             
             if(credit_index != -1)
             {
-                credit_length = credit.length();
+                credit_length = credit.length() + 1;
                 
                 break;
             }
