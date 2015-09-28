@@ -7,7 +7,6 @@ Uses [jsoup-1.8.3](http://jsoup.org/) and [sqlite-jdbc-3.8.11.1](https://www.sql
 
 ![Apollo 12 astronauts Conrad and Bean retrieve parts from the Surveyor](survey_ap12.gif "Apollo 12 Visits Surveyor 3")
 
-
 ***
 
 How to run this project with [Eclipse](https://eclipse.org/) (Windows, Mac OS X, and Linux):  
@@ -34,7 +33,7 @@ If there is an error with the Referenced Libraries folder make sure the Project 
 
 ***
 
-How to run via the command line (Windows, OS X, and UNIX):
+How to run this project via the command line (Windows, Mac OS X, and Linux):
 
 The Java 1.7 JDK (or above) must be installed on the computer and the /bin folder must listed in the System Environment Variables (run "java -version" in Command Prompt).  
 
