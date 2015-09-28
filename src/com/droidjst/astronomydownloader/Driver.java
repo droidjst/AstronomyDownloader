@@ -20,6 +20,7 @@ package com.droidjst.astronomydownloader;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 
 public class Driver
@@ -101,6 +102,8 @@ public class Driver
         
         final String PATH = new File("").getAbsolutePath();
         
+        String temp;
+        
         while(index < urls.length)
         {
             url = urls[index];
@@ -111,15 +114,11 @@ public class Driver
             credit = HTMLUtil.getImageCredit(html);
             explanation = HTMLUtil.getExplanation(html);
             
-            imageutil.download(Const.URL_NASA_APOD + image_src);
+            imageutil.download(image_src);
             
-            dbutil.addExtendedArchiveItem(image_src, url.substring(2, 8), credit, explanation);
+            int[] width_height = imageutil.getImageDimensions(PATH + Const.FILE_SEP + image_src);
             
-            /*
-            int[] wh = imageutil.getImageDimensions(PATH + Const.IMAGES_DIR + image_src.replace("image/", ""));
-            
-            System.out.printf("%d x %d %n", wh[0], wh[1]);
-            */
+            dbutil.addExtendedArchiveItem(image_src, width_height, url.substring(2, 8), credit, explanation);
             
             index++;
             
@@ -148,7 +147,7 @@ public class Driver
             file.mkdirs();
         }
         
-        file = new File(new File("").getAbsolutePath() + Const.IMAGES_DIR);
+        file = new File(new File("").getAbsolutePath() + Const.IMAGE_DIR);
         
         if(file.exists() == false)
         {

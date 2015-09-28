@@ -120,13 +120,13 @@ public class ImageUtil
         
         try
         {
-            url = new URL(url_string);
+            url = new URL(Const.URL_NASA_APOD + url_string);
             
             bistream = new BufferedInputStream(url.openStream(), 16 * 1024);
             
-            String filename = url_string.substring(1 + url_string.lastIndexOf("/"));
+            file = new File(PATH + Const.FILE_SEP + url_string);
             
-            file = new File(PATH + Const.IMAGES_DIR + filename);
+            file.getParentFile().mkdirs();
             
             bostream = new BufferedOutputStream(new FileOutputStream(file), 16 * 1024);
             

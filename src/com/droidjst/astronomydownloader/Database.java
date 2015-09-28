@@ -60,7 +60,9 @@ public class Database
                 "   url         TEXT," +
                 "   title       TEXT," + 
                 "   credit      TEXT," +
-                "   explanation TEXT );");
+                "   explanation TEXT," +
+                "   width       INTEGER," +
+                "   height      INTEGER );");
         }
         catch (SQLException e)
         {

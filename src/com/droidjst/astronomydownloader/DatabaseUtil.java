@@ -32,7 +32,7 @@ public class DatabaseUtil
     private final static SimpleDateFormat date_apod = new SimpleDateFormat("yyMMdd");
     private final static SimpleDateFormat date_custom = new SimpleDateFormat("MMM dd, yyy");
     
-    public boolean addExtendedArchiveItem(String image_src, String date, String credit, String explanation)
+    public boolean addExtendedArchiveItem(String image_src, int[] width_height, String date, String credit, String explanation)
     {
         Connection connection = null;
         Statement statement_select = null;
@@ -69,14 +69,14 @@ public class DatabaseUtil
             
             statement_select.close();
             
-            final String format = "UPDATE apod SET url = '%s', credit = '%s', explanation = '%s' WHERE _id = %d;";
+            final String format = "UPDATE apod SET url = '%s', width = %d, height = %d, credit = '%s', explanation = '%s' WHERE _id = %d;";
             
             statement_update = connection.createStatement();
             
             credit = credit.replace("'", "''");
             explanation = explanation.replace("'", "''");
             
-            String sql_insert = String.format(format, image_src, credit, explanation, _id);
+            String sql_insert = String.format(format, image_src, width_height[0], width_height[1], credit, explanation, _id);
             
             statement_update.executeUpdate(sql_insert);
         }
