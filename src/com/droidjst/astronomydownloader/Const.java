@@ -29,5 +29,5 @@ public class Const
     public final static String FILE_SEP = File.separator;
     
     public final static String ARCHIVE_DIR = FILE_SEP + "archive" + FILE_SEP;
-    public final static String IMAGES_DIR = FILE_SEP + "images" + FILE_SEP;
+    public final static String IMAGE_DIR = FILE_SEP + "image" + FILE_SEP;
 }
