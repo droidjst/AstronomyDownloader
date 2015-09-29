@@ -25,6 +25,7 @@ public class Const
     public final static String URL_NASA_APOD = "http://apod.nasa.gov/apod/";
     
     public final static String DB_NAME = "apod.db";
+    public final static String DB_TABLE = "apod";
     
     public final static String FILE_SEP = File.separator;
     
