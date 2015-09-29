@@ -1,8 +1,12 @@
-Project in beta development
+Astronomy Image Downloader
 ===
 
-Utility used to download astronomy images from the user's search result.  
-Uses [jsoup-1.8.3](http://jsoup.org/) and [sqlite-jdbc-3.8.11.1](https://www.sqlite.org/)
+Utility used to download astronomy images from NASA's Astronomy Picture of the Day Archive.  
+Prmary data is queried from [http://apod.nasa.gov/apod/archivepix.html](http://apod.nasa.gov/apod/archivepix.html).  
+Secondary data is queried from each archive page using Jsoup and string manipulation.
+
+Uses the [jsoup-1.8.3](http://jsoup.org/) library (view [license agreement](http://jsoup.org/license)).  
+Uses the [sqlite-jdbc-3.8.11.1](https://www.sqlite.org/) library.  
 
 
 ![Apollo 12 astronauts Conrad and Bean retrieve parts from the Surveyor](survey_ap12.gif "Apollo 12 Visits Surveyor 3")
