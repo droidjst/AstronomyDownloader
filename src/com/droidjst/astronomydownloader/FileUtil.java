@@ -31,8 +31,6 @@ public class FileUtil
 {
     public static String getContents(String uri) throws IOException
     {
-        File file;
-        
         BufferedReader breader = null;
         
         StringBuilder string = null;
@@ -42,9 +40,7 @@ public class FileUtil
         
         try
         {
-            file = new File(uri);
-            
-            breader = new BufferedReader(new FileReader(file), 16 * 1024);
+            breader = new BufferedReader(new FileReader(new File(uri)), 16 * 1024);
             
             string = new StringBuilder();
             
@@ -69,17 +65,7 @@ public class FileUtil
         }
         finally
         {
-            if(breader != null)
-            {
-                try
-                {
-                    breader.close();
-                }
-                catch (IOException e)
-                {
-                    throw e;
-                }
-            }
+            ReaderUtil.finalizeReaders(breader);
         }
         
         return string.toString();
@@ -119,33 +105,8 @@ public class FileUtil
         }
         finally
         {
-            if(bwriter != null)
-            {
-                try
-                {
-                    bwriter.flush();
-                }
-                catch (IOException e)
-                {
-                    throw e;
-                }
-                finally
-                {
-                    try
-                    {
-                        bwriter.close();
-                    }
-                    catch (IOException e)
-                    {
-                        throw e;
-                    }
-                }
-            }
-            
-            if(sreader != null)
-            {
-                sreader.close();
-            }
+            ReaderUtil.finalizeWriters(bwriter);
+            ReaderUtil.finalizeReaders(sreader);
         }
     }
 }
