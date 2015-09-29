@@ -19,8 +19,6 @@
 package com.droidjst.astronomydownloader;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.sql.SQLException;
 
 public class Driver
@@ -68,9 +66,10 @@ public class Driver
         
         createApplicationFolders();
         
-        downloadImages();
+        //downloadImages();
     }
     
+    /*
     private static void downloadImages()
     {
         String html;
@@ -81,28 +80,11 @@ public class Driver
         
         int index = 0;
         
-        String uri = new File("").getAbsolutePath() + Const.FILE_SEP + "current_index";
-        
-        try
-        {
-            String contents = FileUtil.getContents(uri);
-            
-            index = Integer.parseInt(contents) - 1;
-        }
-        catch (IOException e)
-        {
-            
-        }
-        
-        System.out.println("starting at index " + index);
-        
         String url;
         
         String[] urls = dbutil.getURLs();
         
         final String PATH = new File("").getAbsolutePath();
-        
-        String temp;
         
         while(index < urls.length)
         {
@@ -121,20 +103,9 @@ public class Driver
             dbutil.addExtendedArchiveItem(image_src, width_height, url.substring(2, 8), credit, explanation);
             
             index++;
-            
-            if(index % 25 == 0)
-            {
-                try
-                {
-                    FileUtil.setContents(uri, Integer.toString(index));
-                }
-                catch (IOException e)
-                {
-                    System.out.println("count not set index to file");
-                }
-            }
         }
     }
+    */
     
     private static void createApplicationFolders()
     {
