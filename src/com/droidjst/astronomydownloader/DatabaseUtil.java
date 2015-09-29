@@ -94,8 +94,8 @@ public class DatabaseUtil
         }
         finally
         {
-            database.finalizeConnection(connection, statement_select, statement_update);
-            database.finalizeResultSet(resultset);
+            DatabaseUtil.finalizeConnection(connection, statement_select, statement_update);
+            DatabaseUtil.finalizeResultSet(resultset);
         }
         
         return exc_thrown == false;
@@ -146,7 +146,7 @@ public class DatabaseUtil
         }
         finally
         {
-            database.finalizeConnection(connection, statement);
+            DatabaseUtil.finalizeConnection(connection, statement);
         }
     }
     
@@ -196,7 +196,7 @@ public class DatabaseUtil
         }
         finally
         {
-            database.finalizeConnection(connection, statement);
+            DatabaseUtil.finalizeConnection(connection, statement);
         }
         
         if(exc_thrown)
@@ -229,6 +229,7 @@ public class DatabaseUtil
         
         return -1;
     }
+    
     public static String dateToAPODString(long date)
     {
         return date_apod.format(date);
@@ -237,5 +238,76 @@ public class DatabaseUtil
     public static String dateToCustomString(long date)
     {
         return date_custom.format(date);
+    }
+    
+    public static void finalizeConnection(Connection connection, Statement ... statement)
+    {
+        if(statement != null)
+        {
+            for(Statement _statement : statement)
+            {
+                try
+                {
+                    _statement.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        if(connection != null)
+        {
+            try
+            {
+                connection.commit();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    connection.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public static void finalizeStatement(Statement statement)
+    {
+        if(statement != null)
+        {
+            try
+            {
+                statement.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public static void finalizeResultSet(ResultSet resultset)
+    {
+        if(resultset != null)
+        {
+            try
+            {
+                resultset.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 }
