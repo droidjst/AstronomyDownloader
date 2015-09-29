@@ -35,6 +35,7 @@ public class HTMLUtil
             "Credit and Copyright",
             "Image Credit & Copyright",
             "Credit & Copyright",
+            "Credit & License",
             "Credit",
             "Copyright",
             "Courtesy",
