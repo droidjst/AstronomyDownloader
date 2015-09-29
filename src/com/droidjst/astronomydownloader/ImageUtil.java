@@ -35,7 +35,9 @@ import javax.imageio.stream.ImageInputStream;
 
 public class ImageUtil
 {
-    public int[] getImageDimensions(String uri)
+    private final String PATH = new File("").getAbsolutePath();
+    
+    public int[] getImageDimensions(String uri) throws FileNotFoundException, IOException
     {
         String file_ext;
         
@@ -66,55 +68,28 @@ public class ImageUtil
             }
             catch (FileNotFoundException e)
             {
-                e.printStackTrace();
+                throw e;
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                throw e;
             }
             finally
             {
-                if(ireader != null)
-                {
-                    ireader.dispose();
-                }
-                
-                if(iistream != null)
-                {
-                    try
-                    {
-                        iistream.flush();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            iistream.close();
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                ReaderUtil.Image.finalizeReaders(ireader);
+                StreamUtil.Image.finalizeInputStreams(iistream);
             }
         }
         
         return width_height;
     }
     
-    public Thread download(String url_string)
+    public Thread download(String url_string) throws MalformedURLException, IOException
     {
         URL url = null;
         
         BufferedInputStream bistream = null;
         BufferedOutputStream bostream = null;
-        
-        final String PATH = new File("").getAbsolutePath();
         
         File file = null;
         
@@ -141,48 +116,16 @@ public class ImageUtil
         }
         catch (MalformedURLException e)
         {
-            e.printStackTrace();
+            throw e;
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            throw e;
         }
         finally
         {
-            if(bostream != null)
-            {
-                try
-                {
-                    bostream.flush();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                finally
-                {
-                    try
-                    {
-                        bostream.close();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            
-            if(bistream != null)
-            {
-                try
-                {
-                    bistream.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            StreamUtil.finalizeOutputStreams(bostream);
+            StreamUtil.finalizeInputStreams(bistream);
         }
         
         return null;
