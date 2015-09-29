@@ -31,17 +31,7 @@ import org.jsoup.select.Elements;
 
 public class JsoupUtil
 {
-    public static int JSOUP_CALLS = 0;
-    
-    /*
-    enum SaveMode
-    {
-        PER_DAY,
-        PER_WEEK,
-        PER_MONTH,
-        PER_YEAR,
-    }
-    */
+    private final String PATH = new File("").getAbsolutePath();
     
     public String getHTML(String url)
     {
@@ -50,8 +40,6 @@ public class JsoupUtil
         try
         {
             jdoc = Jsoup.connect(url).get();
-            
-            System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTML %n", ++JSOUP_CALLS);
         }
         catch (IOException e)
         {
@@ -65,16 +53,14 @@ public class JsoupUtil
     {
         Document jdoc = null;
         
-            try
-            {
-                jdoc = Jsoup.connect(url).get();
-                
-                System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLBody %n", ++JSOUP_CALLS);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+        try
+        {
+            jdoc = Jsoup.connect(url).get();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         
         return jdoc == null ? null : jdoc.body().html();
     }
@@ -83,21 +69,19 @@ public class JsoupUtil
     {
         Document jdoc = null;
         
-            try
-            {
-                jdoc = Jsoup.connect(url).get();
-                
-                System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLBodyText %n", ++JSOUP_CALLS);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+        try
+        {
+            jdoc = Jsoup.connect(url).get();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         
         return jdoc == null ? null : jdoc.body().text();
     }
     
-    public String savePage(String url, String filename)
+    public String savePage(String url, String filename) throws IOException
     {
         FileOutputStream fostream = null;
         
@@ -107,44 +91,21 @@ public class JsoupUtil
         {
             Response response = Jsoup.connect(url).execute();
             
-            System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.savePage %n", ++JSOUP_CALLS);
-            
             String charset = response.charset();
             
             html = response.body();
             
-            fostream = new FileOutputStream(new File("").getAbsolutePath() + Const.ARCHIVE_DIR + filename);
+            fostream = new FileOutputStream(PATH + Const.FILE_SEP + Const.ARCHIVE_DIR + filename);
             
             fostream.write(html.getBytes(charset));
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            throw e;
         }
         finally
         {
-            if(fostream != null)
-            {
-                try
-                {
-                    fostream.flush();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                finally
-                {
-                    try
-                    {
-                        fostream.close();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            StreamUtil.finalizeOutputStreams(fostream);
         }
         
         return html;
@@ -159,8 +120,6 @@ public class JsoupUtil
         try
         {
             jdoc = Jsoup.connect(url).get();
-            
-            System.out.printf("DEBUG  > Jsoup Call # %d - JsoupUtil.getHTMLRefs %n", ++JSOUP_CALLS);
             
             Elements links = jdoc.select("a[href~=ap[0-9]{6}\\.html]");
             
